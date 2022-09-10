@@ -1,0 +1,9 @@
+.env
+
+.vscode
+.idea
+
+node_modules
+screenshots
+dist
+
