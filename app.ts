@@ -42,13 +42,6 @@ const LONGITUDE = parseFloat(process.env.LONGITUDE || '0');
 
 type Task = 'punchIn' | 'punchOut'
 
-const browser = await puppeteer.launch({headless: true});
-const page = await browser.newPage();
-
-const context = browser.defaultBrowserContext()
-await context.overridePermissions(PROPERTIME_URL, ALLOWED_PERMISSIONS)
-await page.setGeolocation({latitude: LATITUDE, longitude: LONGITUDE})
-
 const getScreenshot = async (page: Page, fileName: string) => {
     await page.screenshot({path: join(SCREENSHOTS_PATH, `${fileName}.png`)});
 }
@@ -82,6 +75,14 @@ const fillInCell = async (page: Page, selector: string, value: string) => {
 
 
 const main = async (task: Task) => {
+    const browser = await puppeteer.launch({headless: true});
+    const page = await browser.newPage();
+
+    const context = browser.defaultBrowserContext()
+    await context.overridePermissions(PROPERTIME_URL, ALLOWED_PERMISSIONS)
+    await page.setGeolocation({latitude: LATITUDE, longitude: LONGITUDE})
+
+
     console.log(`Starting task: ${task}`)
 
     console.log('going to propertime login page')
