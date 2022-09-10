@@ -1,6 +1,7 @@
 import {join} from 'path';
 import {config} from 'dotenv';
 import puppeteer, {Page, Permission} from 'puppeteer';
+import {schedule} from "node-cron";
 
 // read .env file
 config();
@@ -33,15 +34,15 @@ const CUSTOMER_CELL_SELECT_SELECTOR = process.env.CUSTOMER_CELL_SELECT_SELECTOR 
 const PROJECT_CELL_SELECT_SELECTOR = process.env.PROJECT_CELL_SELECT_SELECTOR as string;
 const TASK_CELL_SELECT_SELECTOR = process.env.TASK_CELL_SELECT_SELECTOR as string;
 
+const PUNCH_IN_SCHEDULE = process.env.PUNCH_IN_SCHEDULE as string;
+const PUNCH_OUT_SCHEDULE = process.env.PUNCH_OUT_SCHEDULE as string;
+
+const LATITUDE = parseFloat(process.env.LATITUDE || '0');
+const LONGITUDE = parseFloat(process.env.LONGITUDE || '0');
 
 type Task = 'punchIn' | 'punchOut'
-const argv = process.argv.slice(2) as [Task]
-const task = argv[0]
 
-const LATITUDE = 32.10875791175589
-const LONGITUDE = 34.838625732746685
-
-const browser = await puppeteer.launch({headless: false});
+const browser = await puppeteer.launch({headless: true});
 const page = await browser.newPage();
 
 const context = browser.defaultBrowserContext()
@@ -80,7 +81,7 @@ const fillInCell = async (page: Page, selector: string, value: string) => {
 }
 
 
-const main = async () => {
+const main = async (task: Task) => {
     console.log(`Starting task: ${task}`)
 
     console.log('going to propertime login page')
@@ -162,7 +163,10 @@ const main = async () => {
     // await browser.close();
 }
 
-await main()
+// run main with task=punchIn on weekdays at 9:00
+console.log('scheduling punch in', PUNCH_IN_SCHEDULE)
+schedule(PUNCH_IN_SCHEDULE, () => main('punchIn'));
 
-
-export {}
+// run main with task=punchOut on weekdays at 18:00
+console.log('scheduling punch out', PUNCH_OUT_SCHEDULE)
+schedule(PUNCH_OUT_SCHEDULE, () => main('punchOut'));
