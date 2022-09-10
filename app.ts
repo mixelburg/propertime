@@ -10,8 +10,8 @@ const SCREENSHOTS_PATH = process.env.SCREENSHOTS_PATH as string;
 const PROPERTIME_URL = process.env.PROPERTIME_URL as string
 const ALLOWED_PERMISSIONS: Permission[] = JSON.parse(process.env.ALLOWED_PERMISSIONS || '[]');
 
-const USERNAME = process.env.USERNAME as string;
-const PASSWORD = process.env.PASSWORD as string;
+const USERNAME = process.env.USERNAME_VALUE as string;
+const PASSWORD = process.env.PASSWORD_VALUE as string;
 const CUSTOMER = process.env.CUSTOMER as string;
 const PROJECT = process.env.PROJECT as string;
 const TASK = process.env.TASK as string;
@@ -119,6 +119,8 @@ const main = async () => {
         case 'punchIn':
             console.log('pressing punch in button', PUNCH_IN_BUTTON_SELECTOR)
             await page.click(PUNCH_IN_BUTTON_SELECTOR);
+            console.log('waiting for loading spinner to disappear', LOADING_SPINNER_SELECTOR)
+            await page.waitForSelector(LOADING_SPINNER_SELECTOR, {hidden: true});
 
             console.log('taking screenshot after punch in')
             await getScreenshot(page, 'punch-in');
@@ -126,6 +128,9 @@ const main = async () => {
         case 'punchOut':
             console.log('pressing punch out button', PUNCH_OUT_BUTTON_SELECTOR)
             await page.click(PUNCH_OUT_BUTTON_SELECTOR);
+            console.log('waiting for loading spinner to disappear', LOADING_SPINNER_SELECTOR)
+            await page.waitForSelector(LOADING_SPINNER_SELECTOR, {hidden: true});
+
             console.log('pressing add row button', ADD_ROW_BUTTON_SELECTOR)
             await page.click(ADD_ROW_BUTTON_SELECTOR);
 
@@ -160,4 +165,4 @@ const main = async () => {
 await main()
 
 
-export default main
+export {}

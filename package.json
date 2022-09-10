@@ -6,8 +6,9 @@
   "main": "app.js",
   "scripts": {
     "run": "tsc && node dist/app.js",
-    "run:in": "npm run run -- punchIn",
-    "run:out": "npm run run -- punchOut"
+    "build": "tsc",
+    "run:in": "node dist/app.js punchIn",
+    "run:out": "node dist/app.js punchOut"
   },
   "author": "",
   "license": "ISC",
