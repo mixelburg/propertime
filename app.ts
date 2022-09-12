@@ -32,13 +32,12 @@ const CUSTOMER_CELL_SELECT_SELECTOR = process.env.CUSTOMER_CELL_SELECT_SELECTOR 
 const PROJECT_CELL_SELECT_SELECTOR = process.env.PROJECT_CELL_SELECT_SELECTOR as string;
 const TASK_CELL_SELECT_SELECTOR = process.env.TASK_CELL_SELECT_SELECTOR as string;
 
-const PUNCH_IN_SCHEDULE = process.env.PUNCH_IN_SCHEDULE as string;
-const PUNCH_OUT_SCHEDULE = process.env.PUNCH_OUT_SCHEDULE as string;
+
 
 const LATITUDE = parseFloat(process.env.LATITUDE || '0');
 const LONGITUDE = parseFloat(process.env.LONGITUDE || '0');
 
-type Task = 'punchIn' | 'punchOut'
+export type Task = 'punchIn' | 'punchOut'
 
 const fillInCell = async (page: Page, selector: string, value: string) => {
     console.log(`filling in cell ${selector} with value ${value}`)
@@ -68,7 +67,7 @@ const fillInCell = async (page: Page, selector: string, value: string) => {
 }
 
 
-const main = async (task: Task) => {
+export const main = async (task: Task) => {
     const browser = await puppeteer.launch({headless: true, args: ['--no-sandbox']});
     const page = await browser.newPage();
 
@@ -142,10 +141,3 @@ const main = async (task: Task) => {
     // await browser.close();
 }
 
-// run main with task=punchIn on weekdays at 9:00
-console.log('scheduling punch in', PUNCH_IN_SCHEDULE)
-schedule(PUNCH_IN_SCHEDULE, () => main('punchIn'));
-
-// run main with task=punchOut on weekdays at 18:00
-console.log('scheduling punch out', PUNCH_OUT_SCHEDULE)
-schedule(PUNCH_OUT_SCHEDULE, () => main('punchOut'));
