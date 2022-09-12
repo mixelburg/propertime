@@ -6,8 +6,6 @@ import {schedule} from "node-cron";
 // read .env file
 config();
 
-const SCREENSHOTS_PATH = process.env.SCREENSHOTS_PATH as string;
-
 const PROPERTIME_URL = process.env.PROPERTIME_URL as string
 const ALLOWED_PERMISSIONS: Permission[] = JSON.parse(process.env.ALLOWED_PERMISSIONS || '[]');
 
@@ -41,10 +39,6 @@ const LATITUDE = parseFloat(process.env.LATITUDE || '0');
 const LONGITUDE = parseFloat(process.env.LONGITUDE || '0');
 
 type Task = 'punchIn' | 'punchOut'
-
-const getScreenshot = async (page: Page, fileName: string) => {
-    await page.screenshot({path: join(SCREENSHOTS_PATH, `${fileName}.png`)});
-}
 
 const fillInCell = async (page: Page, selector: string, value: string) => {
     console.log(`filling in cell ${selector} with value ${value}`)
@@ -87,8 +81,6 @@ const main = async (task: Task) => {
 
     console.log('going to propertime login page')
     await page.goto(PROPERTIME_URL);
-    console.log('getting screenshot of login page')
-    await getScreenshot(page, 'login-page');
 
     console.log('waiting for username input', USERNAME_SELECTOR)
     await page.waitForSelector(USERNAME_SELECTOR);
@@ -100,20 +92,14 @@ const main = async (task: Task) => {
     console.log('typing password', PASSWORD)
     await page.type(PASSWORD_SELECTOR, PASSWORD);
 
-    console.log('taking screenshot of login page with username and password')
-    await getScreenshot(page, 'login-page-before-submit');
-
     console.log('clicking login button', LOGIN_BUTTON_SELECTOR)
     await page.click(LOGIN_BUTTON_SELECTOR);
 
     console.log('waiting for page navigation')
     await page.waitForNavigation();
 
-    await getScreenshot(page, 'main-page-loading');
-
     console.log('waiting for loading spinner to disappear', LOADING_SPINNER_SELECTOR)
     await page.waitForSelector(LOADING_SPINNER_SELECTOR, {hidden: true});
-    await getScreenshot(page, 'main-page');
 
 
     console.log(`Processing task: ${task}`)
@@ -124,8 +110,6 @@ const main = async (task: Task) => {
             console.log('waiting for loading spinner to disappear', LOADING_SPINNER_SELECTOR)
             await page.waitForSelector(LOADING_SPINNER_SELECTOR, {hidden: true});
 
-            console.log('taking screenshot after punch in')
-            await getScreenshot(page, 'punch-in');
             break;
         case 'punchOut':
             console.log('pressing punch out button', PUNCH_OUT_BUTTON_SELECTOR)
@@ -135,9 +119,6 @@ const main = async (task: Task) => {
 
             console.log('pressing add row button', ADD_ROW_BUTTON_SELECTOR)
             await page.click(ADD_ROW_BUTTON_SELECTOR);
-
-            console.log('taking screenshot after punch out')
-            await getScreenshot(page, 'punch-out');
 
             console.log('waiting for start time field', START_TIME_FIELD_SELECTOR)
             await page.waitForSelector(START_TIME_FIELD_SELECTOR);
@@ -152,9 +133,6 @@ const main = async (task: Task) => {
             await fillInCell(page, PROJECT_CELL_SELECT_SELECTOR, PROJECT)
             console.log('filling in task cell', TASK_CELL_SELECT_SELECTOR)
             await fillInCell(page, TASK_CELL_SELECT_SELECTOR, TASK)
-
-            console.log('taking screenshot before adding row')
-            await getScreenshot(page, 'add-row');
 
             console.log('pressing save button', SAVE_ROW_BUTTON_SELECTOR)
             await page.click(SAVE_ROW_BUTTON_SELECTOR);
