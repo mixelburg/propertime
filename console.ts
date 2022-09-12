@@ -1,4 +1,4 @@
-import {main, Task} from "./app";
+import {main, Task} from "./app.js";
 
 const argv = process.argv.slice(2);
 

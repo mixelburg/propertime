@@ -4,7 +4,7 @@ config();
 
 // run main with task=punchIn on weekdays at 9:00
 import {schedule} from "node-cron";
-import {main} from "./app";
+import {main} from "./app.js";
 
 const PUNCH_IN_SCHEDULE = process.env.PUNCH_IN_SCHEDULE as string;
 const PUNCH_OUT_SCHEDULE = process.env.PUNCH_OUT_SCHEDULE as string;
