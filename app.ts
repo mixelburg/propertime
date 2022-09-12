@@ -138,6 +138,6 @@ export const main = async (task: Task) => {
             break;
     }
     console.log(`Finished task: ${task}, closing browser`)
-    // await browser.close();
+    await browser.close();
 }
 
