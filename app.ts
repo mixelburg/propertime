@@ -68,7 +68,7 @@ const fillInCell = async (page: Page, selector: string, value: string) => {
 
 
 export const main = async (task: Task) => {
-    const browser = await puppeteer.launch({headless: HEADED, args: ['--no-sandbox']});
+    const browser = await puppeteer.launch({headless: !HEADED, args: ['--no-sandbox']});
     const page = await browser.newPage();
 
     const context = browser.defaultBrowserContext()
