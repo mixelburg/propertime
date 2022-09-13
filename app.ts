@@ -32,10 +32,10 @@ const CUSTOMER_CELL_SELECT_SELECTOR = process.env.CUSTOMER_CELL_SELECT_SELECTOR 
 const PROJECT_CELL_SELECT_SELECTOR = process.env.PROJECT_CELL_SELECT_SELECTOR as string;
 const TASK_CELL_SELECT_SELECTOR = process.env.TASK_CELL_SELECT_SELECTOR as string;
 
-
-
 const LATITUDE = parseFloat(process.env.LATITUDE || '0');
 const LONGITUDE = parseFloat(process.env.LONGITUDE || '0');
+
+const HEADED = process.env.HEADED === 'true';
 
 export type Task = 'punchIn' | 'punchOut'
 
@@ -68,7 +68,7 @@ const fillInCell = async (page: Page, selector: string, value: string) => {
 
 
 export const main = async (task: Task) => {
-    const browser = await puppeteer.launch({headless: false, args: ['--no-sandbox']});
+    const browser = await puppeteer.launch({headless: HEADED, args: ['--no-sandbox']});
     const page = await browser.newPage();
 
     const context = browser.defaultBrowserContext()
