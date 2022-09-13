@@ -68,7 +68,7 @@ const fillInCell = async (page: Page, selector: string, value: string) => {
 
 
 export const main = async (task: Task) => {
-    const browser = await puppeteer.launch({headless: true, args: ['--no-sandbox']});
+    const browser = await puppeteer.launch({headless: false, args: ['--no-sandbox']});
     const page = await browser.newPage();
 
     const context = browser.defaultBrowserContext()
@@ -115,6 +115,13 @@ export const main = async (task: Task) => {
             await page.click(PUNCH_OUT_BUTTON_SELECTOR);
             console.log('waiting for loading spinner to disappear', LOADING_SPINNER_SELECTOR)
             await page.waitForSelector(LOADING_SPINNER_SELECTOR, {hidden: true});
+
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            // press enter to confirm
+            await page.keyboard.press('Enter');
+
+            await new Promise(resolve => setTimeout(resolve, 1000));
 
             console.log('pressing add row button', ADD_ROW_BUTTON_SELECTOR)
             await page.click(ADD_ROW_BUTTON_SELECTOR);
