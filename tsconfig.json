@@ -7,6 +7,7 @@
     "strict": true,
     "skipLibCheck": true,
     "outDir": "./dist",
-    "moduleResolution": "Node"
+    "moduleResolution": "Node",
+    "baseUrl": "./src",
   }
 }
