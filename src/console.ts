@@ -1,14 +1,16 @@
 import {main, Task, taskOptions} from "./app.js";
+import logger from "./logger";
 
 const argv = process.argv.slice(2);
-
 const task = argv[0] as Task;
 
-if (!task) {
-    console.log('no task provided');
-} else if (!taskOptions.includes(task)) {
-    console.log(`invalid task provided: ${task}`);
-} else {
-    console.log(`task: ${task}`)
+try {
+    if (!task) throw new Error('no task provided')
+    if (!taskOptions.includes(task)) throw new Error(`invalid task provided: ${task}`)
+
     await main(task)
+} catch (e: any) {
+    logger.error(e.message);
+    console.log(e)
 }
+
