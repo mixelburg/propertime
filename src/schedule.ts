@@ -1,7 +1,7 @@
 import {schedule} from "node-cron";
-import {main} from "./app";
-import {config} from "./config";
-import logger from "./logger";
+import {main} from "./app.js";
+import {config} from "./config.js";
+import logger from "./logger.js";
 
 const captureErrors = async (fn: () => Promise<void>) => {
     try {

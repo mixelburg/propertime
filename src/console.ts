@@ -1,5 +1,5 @@
 import {main, Task, taskOptions} from "./app.js";
-import logger from "./logger";
+import logger from "./logger.js";
 
 const argv = process.argv.slice(2);
 const task = argv[0] as Task;
