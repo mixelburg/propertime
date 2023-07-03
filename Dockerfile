@@ -24,4 +24,5 @@ COPY --from=builder /app/dist /app
 RUN npm install --omit=dev
 RUN ls -la
 
-ENTRYPOINT ["node", "schedule.js"]
+# run node from binary
+CMD ["node", "schedule.js"]

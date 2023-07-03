@@ -46,6 +46,10 @@ const config = {
 
 // check that all config values are defined
 for (const [key, value] of Object.entries(config)) {
+    // if value is boolean, it's ok to be false
+    if (typeof value === 'boolean') {
+        continue
+    }
     if (!value) {
         throw new Error(`Missing config value for key: ${key}`)
     }
