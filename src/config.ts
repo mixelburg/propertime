@@ -40,8 +40,8 @@ const config = {
     LATITUDE: parseFloat(process.env.LATITUDE || '0'),
     LONGITUDE: parseFloat(process.env.LONGITUDE || '0'),
 
-    PUNCH_IN_SCHEDULE: process.env.PUNCH_IN_SCHEDULE as string,
-    PUNCH_OUT_SCHEDULE: process.env.PUNCH_OUT_SCHEDULE as string,
+    PUNCH_IN_HOUR: parseInt(process.env.PUNCH_IN_HOUR as string || '0'),
+    PUNCH_OUT_HOUR: parseInt(process.env.PUNCH_OUT_HOUR as string || '0'),
 } as const
 
 // check that all config values are defined
