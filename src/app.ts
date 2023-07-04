@@ -130,7 +130,10 @@ const punchOut = async (page: Page) => {
 }
 
 export const main = async (task: Task) => {
-    const browser = await puppeteer.launch({headless: !config.HEADED, args: ['--no-sandbox']});
+    const browser = await puppeteer.launch({
+        headless: !config.HEADED,
+        args: ['--no-sandbox']
+    });
     const page = await browser.newPage();
 
     page.on('dialog', async dialog => {
