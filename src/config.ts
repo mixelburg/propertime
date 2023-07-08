@@ -1,11 +1,9 @@
-import {Permission} from "puppeteer";
-
 import {config as envConfig} from 'dotenv'
 
 envConfig()
 
 const config = {
-    VERSION: '2.0.0',
+    VERSION: '2.0.1',
     LOG_LEVEL: process.env.LOG_LEVEL || 'debug',
     APP_NAME: 'propertime',
     HOST: process.env.HOST,
@@ -40,19 +38,17 @@ const config = {
     LATITUDE: parseFloat(process.env.LATITUDE || '0'),
     LONGITUDE: parseFloat(process.env.LONGITUDE || '0'),
 
-    PUNCH_IN_HOUR: parseInt(process.env.PUNCH_IN_HOUR as string || '0'),
-    PUNCH_OUT_HOUR: parseInt(process.env.PUNCH_OUT_HOUR as string || '0'),
+    PUNCH_IN_SCHEDULE: process.env.PUNCH_IN_SCHEDULE as string,
+    PUNCH_OUT_SCHEDULE: process.env.PUNCH_OUT_SCHEDULE as string,
 } as const
 
-// check that all config values are defined
-for (const [key, value] of Object.entries(config)) {
+const missingKeys = Object.entries(config).filter(([key, value]) => {
     // if value is boolean, it's ok to be false
-    if (typeof value === 'boolean') {
-        continue
-    }
-    if (!value) {
-        throw new Error(`Missing config value for key: ${key}`)
-    }
+    if (typeof value === 'boolean') return false
+    return !value
+})
+if (missingKeys.length > 0) {
+    throw new Error(`Missing config values: ${missingKeys.map(([key]) => key).join(', ')}`)
 }
 
 export {config}

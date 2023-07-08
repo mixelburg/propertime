@@ -13,12 +13,7 @@ RUN tsc
 
 FROM node:slim as runner
 
-ENV TZ=Asia/Jerusalem
-
 RUN apt-get update
-
-RUN apt-get install -y tzdata \
-    && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get install curl gnupg -y
 RUN curl --location --silent https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
@@ -32,6 +27,8 @@ COPY package.json /app
 RUN npm install --omit=dev
 
 COPY --from=builder /app/dist /app
+
+RUN ln -fs /usr/share/zoneinfo/Israel /etc/localtime
 
 # run node from binary
 CMD ["node", "schedule.js"]

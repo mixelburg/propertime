@@ -12,10 +12,10 @@ const captureErrors = async (fn: () => Promise<void>) => {
     }
 }
 
-logger.info(`scheduling punch in ${config.PUNCH_IN_HOUR}`)
-schedule(`0 ${config.PUNCH_IN_HOUR} * * 0-4`, async () => captureErrors(() => main('punchIn')));
+const punchInSchedule = config.PUNCH_IN_SCHEDULE.split(':').join(' ')
+logger.info(`scheduling punch in ${punchInSchedule}`)
+schedule(punchInSchedule, async () => captureErrors(() => main('punchIn')));
 
-logger.info(`scheduling punch out ${config.PUNCH_OUT_HOUR}`)
-schedule(`0 ${config.PUNCH_OUT_HOUR} * * 0-4`, async () => captureErrors(() => main('punchOut')));
-
-
+const punchOutSchedule = config.PUNCH_OUT_SCHEDULE.split(':').join(' ')
+logger.info(`scheduling punch out ${punchOutSchedule}`)
+schedule(punchOutSchedule, async () => captureErrors(() => main('punchOut')));
